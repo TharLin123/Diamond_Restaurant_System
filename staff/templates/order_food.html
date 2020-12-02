@@ -1,0 +1,139 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.image {
+	 border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  display: block;
+  max-width: 35%;
+    height: auto;
+}
+</style>
+	<meta charset="utf-8">
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	<meta name="viewport" content="width=device-width" />
+	<title>Botany Template</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+    <!-- 
+    Botany Template 
+    http://www.templatemo.com/preview/templatemo_391_botany 
+    -->
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'templatemo_style.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'flexslider.css'%}" type="text/css" media="screen" />
+
+	<!-- Modernizr -->
+  	<script src="slider/modernizr.js"></script>
+
+	<!-- HTML 5 shim for IE backwards compatibility -->
+		<!-- [if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+		</script>
+		<![endif]-->
+	<!-- 
+	Credits
+	Equal Height Columns http://www.hongkiat.com/blog/css-equal-height/ -->
+</head>
+<body class="templatemo_juice_bg">
+	<div id="main_container">
+		<div class="container" id="home">
+			<div class="row col-wrap">			 
+				<div id="left_container" class="col col-md-3 col-sm-12">
+                	<div class="templatemo_logo">
+						<a href="#"><h1>Diamond Restaurant</h1></a>
+					</div>
+					<nav id="main_nav">
+						<ul class="nav">
+						<ul class="nav">
+						<ul class="nav">
+							<li><a href={% url 'home' %}>Home</a></li>
+							<li><a href={% url 'food-list' %}>Foods</a></li>
+							<li class="active"><a href="{% url 'order-list' %}">Ordered List</a></li>
+							{% if user.is_authenticated  %}
+							<li><a href={% url 'staff-profile' %}>Profile</a></li>
+                            <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                            {% else %}
+							<li><a class="nav-link" href="{% url 'staff-register' %}">Register</a></li>
+							<li><a class="nav-link" href="{% url 'staff-login' %}">Login</a></li>
+                            {% endif %}
+						</ul>
+						</ul>
+						</ul>
+					</nav> <!-- nav -->	
+					<form  action="#" method="get" class="navbar-form" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search" id="keyword" name="keyword">
+						</div>
+						<button type="submit" class="btn btn-primary" name="Search">Go</button>
+					</form>
+					<div>
+						<a href="#"><img src="{% static 'images/facebook.png'%}" alt="Like us on Facebook"></a>
+						<a href="#"><img src="{% static 'images/twitter.png'%}" alt="Follow us on Twitter"></a>
+						<a href="#"><img src="{% static 'images/rss.png'%}" alt="RSS feeds"></a>
+					</div>
+				</div>
+				<div id="right_container" class="col col-md-9 col-sm-12">
+                
+					<div class="row">
+                    	<div class="col col-md-12">
+                        
+                    		<h2>Food Cart Details</h2>
+        <div class="card-body">
+          <h4 class="card-title">{{food.food_name}}</h4>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h3>Order By : {{food_order.customer}}</h3><br>
+			{% for order_foods in ordered_food %}
+			<h4>{{order_foods.food}} = {{order_foods.quantity}}	 <a class="btn btn-primary" href={% url 'delete-order' order_foods.id %}>Remove</a></h4>
+			<hr>
+			{% endfor %}
+			<h3>Total Price : {{total_price}}$</h3>
+            {{payment_form.as_p}}<br>
+			<a class="btn btn-primary" href={% url 'food-list' %}>Back to Food List</a>
+            <button class="btn btn-primary">Make Payment</button><br><br><br>
+          </form>	
+        				</div>
+                    </div>
+				</div>
+			</div>
+			<footer class="row credit">
+				<div class="col col-md-12">
+					<div id="templatemo_footer">
+						Copyright © 2084 <a href="#">Company Name</a>
+					</div>
+				</div>
+			</footer>
+		</div>		
+	</div>
+    
+  <!-- jQuery -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+
+  <!-- FlexSlider -->
+  <script defer src="slider/jquery.flexslider.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      SyntaxHighlighter.all();
+    });
+    $(window).load(function(){
+      $('.flexslider').flexslider({
+        animation: "slide",
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+    });
+  </script>
+  <!-- templatemo 391 botany -->
+
+</body>
+</html>
+
+

@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	.image {
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 5px;
+		display: block;
+		max-width: 90%;
+		height: auto;
+	}
+	</style>
+<meta charset="utf-8">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<meta name="viewport" content="width=device-width" />
+<title>Portfolio - Botany Template</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<!-- 
+Botany Template 
+http://www.templatemo.com/preview/templatemo_391_botany 
+-->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'templatemo_style.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'flexslider.css'%}" type="text/css" media="screen" />
+
+<!-- HTML 5 shim for IE backwards compatibility -->
+	<!-- [if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+	</script>
+	<![endif]-->
+<!-- 
+Credits
+Equal Height Columns http://www.hongkiat.com/blog/css-equal-height/ -->
+</head>
+<body class="templatemo_padaut_bg">
+<div id="main_container">
+	<div class="container" id="services">
+		<div class="row col-wrap">			 
+			<div id="left_container" class="col col-md-3 col-sm-12">
+				<div class="templatemo_logo">
+					<a href="#"><h1>Diamond Restaurant</h1></a>
+				</div>
+				<nav id="main_nav">
+					<ul class="nav">
+						<li><a href={% url 'home' %}>Home</a></li>
+						<li class="active"><a href={% url 'food-list' %}>Foods</a></li>
+						<li><a href="{% url 'order-list' %}">Ordered List</a></li>
+						{% if user.is_authenticated  %}
+						<li><a href={% url 'staff-profile' %}>Profile</a></li>
+						<li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+						{% else %}
+						<li><a class="nav-link" href="{% url 'staff-register' %}">Register</a></li>
+						<li><a class="nav-link" href="{% url 'staff-login' %}">Login</a></li>
+						{% endif %}
+					</ul>
+				</nav> <!-- nav -->	
+				<form  action="{% url 'search-order' %}" method="GET" class="navbar-form" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search" id="keyword" name="search">
+					</div>
+					<button type="submit" class="btn btn-primary" name="Search">Go</button>
+				</form>
+				<div>
+					<a href="#"><img src="{% static 'images/facebook.png'%}" alt="Like us on Facebook"></a>
+					<a href="#"><img src="{% static 'images/twitter.png'%}" alt="Follow us on Twitter"></a>
+					<a href="#"><img src="{% static 'images/rss.png'%}" alt="RSS feeds"></a>
+				</div>
+			</div>			  	
+			<div id="right_container" class="col col-md-9 col-sm-12">
+				<div class="row">
+					<div class="col col-md-12">
+						<h2>Food Menu</h2>
+						<a class="btn btn-primary" href="{% url 'shopping-cart' %}">Click here for Food-Cart</a>
+						<br><br>
+																	{% if messages %}
+				<ul class="messages">
+					{% for message in messages %}
+					<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+					</div>
+				</div>
+				
+				<article class="row">
+				{% for foods in food %}
+					<div class="col col-md-6">							
+						<img src="{{foods.image.url}}" alt="Pic 1" class="image">
+						<h4>{{foods.food_name}}</h4>
+						<h3>{{foods.price}}$</h3>
+						<p>This food is the {{foods.get_food_type_display}} from {{foods.food_supplier.supplier_name}}. It is {{foods.get_quality_display}}.</p>
+					<form method = 'POST', action="{% url 'add-to-cart' foods.id %}">
+					{% csrf_token %}
+					
+						<p>{{form}} <button class="btn btn-primary">Add to Cart</button></p>>
+					</form>
+					</div>
+				{% endfor %}
+				</article> 	   
+			</div>
+		</div>
+		<footer class="row credit">
+			<div class="col col-md-12">
+				<div id="templatemo_footer">
+					Copyright © 2084 <a href="#">Company Name</a>
+				</div>
+			</div>
+		</footer>
+	</div>		
+</div>
+<!-- templatemo 391 botany -->
+</body>
+</html>
